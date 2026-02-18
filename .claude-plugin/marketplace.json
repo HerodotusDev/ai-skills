@@ -4,27 +4,32 @@
     "name": "HerodotusDev"
   },
   "metadata": {
-    "description": "Herodotus Cloud Services AI skills for proving, storage proofs, data processing, and on-chain verification",
+    "description": "Verifiable cross-chain data, ZK proofs, storage proofs, Cairo proving, and on-chain verification skills",
     "version": "1.0.0"
   },
   "plugins": [
     {
       "name": "herodotus-skills",
       "source": "./plugins/herodotus-skills",
-      "description": "AI skill playbooks for all Herodotus products: Atlantic API, Data Processor, Storage Proofs, Satellite Contracts, and Data Structure Indexer.",
+      "description": "Solve cross-chain data access, ZK proofs, verifiable computation, storage proofs, reading historical or off-chain blockchain state on-chain, and Cairo program proving.",
       "version": "1.0.0",
       "author": {
-        "name": "HerodotusDev"
+        "name": "HerodotusDev",
+        "url": "https://github.com/HerodotusDev"
       },
+      "homepage": "https://docs.herodotus.cloud",
+      "repository": "https://github.com/HerodotusDev/ai-skills",
+      "license": "MIT",
       "keywords": [
         "herodotus",
-        "proving",
+        "cross-chain",
         "storage-proofs",
         "zk",
         "cairo",
         "starknet",
         "atlantic",
-        "satellite"
+        "satellite",
+        "verifiable-computation"
       ],
       "category": "development-tools"
     }

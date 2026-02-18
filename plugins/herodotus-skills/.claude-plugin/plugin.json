@@ -1,35 +1,23 @@
 {
   "name": "herodotus-skills",
   "version": "1.0.0",
-  "description": "Herodotus Cloud Services AI skill playbooks — vendor-neutral guides for building with Atlantic API, Data Processor, Storage Proofs, Satellite Contracts, and more.",
-  "skills": [
-    {
-      "name": "herodotus",
-      "source": "./skills/herodotus"
-    },
-    {
-      "name": "atlantic-api",
-      "source": "./skills/atlantic-api"
-    },
-    {
-      "name": "data-processor",
-      "source": "./skills/data-processor"
-    },
-    {
-      "name": "data-processor-api",
-      "source": "./skills/data-processor-api"
-    },
-    {
-      "name": "storage-proof-api",
-      "source": "./skills/storage-proof-api"
-    },
-    {
-      "name": "satellite-contracts",
-      "source": "./skills/satellite-contracts"
-    },
-    {
-      "name": "data-structure-indexer-api",
-      "source": "./skills/data-structure-indexer-api"
-    }
+  "description": "Herodotus Cloud Services AI skill playbooks — verifiable cross-chain data, ZK proofs, storage proofs, Cairo proving, and on-chain verification.",
+  "author": {
+    "name": "HerodotusDev",
+    "url": "https://github.com/HerodotusDev"
+  },
+  "homepage": "https://docs.herodotus.cloud",
+  "repository": "https://github.com/HerodotusDev/ai-skills",
+  "license": "MIT",
+  "keywords": [
+    "herodotus",
+    "cross-chain",
+    "storage-proofs",
+    "zk",
+    "cairo",
+    "starknet",
+    "atlantic",
+    "satellite",
+    "verifiable-computation"
   ]
 }
