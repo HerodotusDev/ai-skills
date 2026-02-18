@@ -26,8 +26,9 @@ Usage:
 Options:
   --claude        Install for Claude Code (plugin marketplace)
   --cursor        Install for Cursor (skills directory)
-  --codex         Install for Codex / OpenAI (skills directory)
-  --google        Install AGENTS.md for Google Gemini / Jules
+  --codex         Install for Codex / Gemini CLI (.agents/skills standard)
+  --gemini-cli    Alias for --codex (same .agents/skills path)
+  --google        Install AGENTS.md for Google Jules
   --antigravity   Install for Google Antigravity (skills directory)
   --project       Install into current project instead of global home
   --help          Show this help message
@@ -39,6 +40,7 @@ Examples:
   curl -fsSL https://raw.githubusercontent.com/HerodotusDev/ai-skills/main/install.sh | bash -s -- --claude --cursor
   curl -fsSL https://raw.githubusercontent.com/HerodotusDev/ai-skills/main/install.sh | bash -s -- --antigravity --project
   curl -fsSL https://raw.githubusercontent.com/HerodotusDev/ai-skills/main/install.sh | bash -s -- --cursor --project
+  curl -fsSL https://raw.githubusercontent.com/HerodotusDev/ai-skills/main/install.sh | bash -s -- --codex --project
 HELP
   exit 0
 }
@@ -47,7 +49,7 @@ while [[ $# -gt 0 ]]; do
   case $1 in
     --claude)       INSTALL_CLAUDE=true;       EXPLICIT_FLAGS=true; shift;;
     --cursor)       INSTALL_CURSOR=true;       EXPLICIT_FLAGS=true; shift;;
-    --codex)        INSTALL_CODEX=true;        EXPLICIT_FLAGS=true; shift;;
+    --codex|--gemini-cli) INSTALL_CODEX=true;    EXPLICIT_FLAGS=true; shift;;
     --google)       INSTALL_GOOGLE=true;       EXPLICIT_FLAGS=true; shift;;
     --antigravity)  INSTALL_ANTIGRAVITY=true;  EXPLICIT_FLAGS=true; shift;;
     --project) PROJECT_MODE=true; shift;;
@@ -60,7 +62,7 @@ done
 # Interactive multi-select (only when no explicit tool flags were given)
 # ---------------------------------------------------------------------------
 show_selector() {
-  local -a labels=("Claude Code" "Cursor" "Codex / OpenAI" "Google Gemini / Jules" "Google Antigravity")
+  local -a labels=("Claude Code" "Cursor" "Codex / Gemini CLI" "Google Jules" "Google Antigravity")
   local -a checked=(false false false false false)
   local -a hints=("" "" "" "" "")
   local project_checked=false
@@ -81,9 +83,9 @@ show_selector() {
     hints[1]="detected"; checked[1]=true
   fi
 
-  if [[ -f "$HOME/.codex/skills/herodotus/SKILL.md" ]]; then
+  if [[ -f "$HOME/.agents/skills/herodotus/SKILL.md" ]] || [[ -f ".agents/skills/herodotus/SKILL.md" ]]; then
     hints[2]="installed"; checked[2]=true
-  elif [[ -d "$HOME/.codex" ]] || command -v codex &>/dev/null 2>&1; then
+  elif [[ -d "$HOME/.codex" ]] || command -v codex &>/dev/null 2>&1 || command -v gemini &>/dev/null 2>&1; then
     hints[2]="detected"; checked[2]=true
   fi
 
@@ -304,20 +306,25 @@ if $INSTALL_CURSOR; then
   installed_count=$((installed_count + 1))
 fi
 
-# --- Codex ---
+# --- Codex / Gemini CLI ---
 if $INSTALL_CODEX; then
-  echo "  [Codex]"
-  TARGET="$HOME/.codex/skills"
-  echo "    Installing to: $TARGET/"
+  echo "  [Codex / Gemini CLI]"
+  if $PROJECT_MODE; then
+    TARGET=".agents/skills"
+    echo "    Installing to project: ./$TARGET/"
+  else
+    TARGET="$HOME/.agents/skills"
+    echo "    Installing to global: $TARGET/"
+  fi
   download_skills "$TARGET"
   echo "    Done."
   echo ""
   installed_count=$((installed_count + 1))
 fi
 
-# --- Google (Gemini / Jules) ---
+# --- Google Jules ---
 if $INSTALL_GOOGLE; then
-  echo "  [Google Gemini / Jules]"
+  echo "  [Google Jules]"
   echo "    Downloading AGENTS.md to current directory..."
   if curl -fsSL "$BASE_URL/AGENTS.md" -o "./AGENTS.md" 2>/dev/null; then
     echo "    + AGENTS.md"

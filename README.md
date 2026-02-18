@@ -19,10 +19,10 @@ curl -fsSL https://raw.githubusercontent.com/HerodotusDev/ai-skills/main/install
 # Cursor only
 curl -fsSL https://raw.githubusercontent.com/HerodotusDev/ai-skills/main/install.sh | bash -s -- --cursor
 
-# Codex only
+# Codex / Gemini CLI (both use .agents/skills standard)
 curl -fsSL https://raw.githubusercontent.com/HerodotusDev/ai-skills/main/install.sh | bash -s -- --codex
 
-# Google Gemini / Jules
+# Google Jules
 curl -fsSL https://raw.githubusercontent.com/HerodotusDev/ai-skills/main/install.sh | bash -s -- --google
 
 # Google Antigravity
@@ -30,6 +30,9 @@ curl -fsSL https://raw.githubusercontent.com/HerodotusDev/ai-skills/main/install
 
 # Cursor into current project (instead of global)
 curl -fsSL https://raw.githubusercontent.com/HerodotusDev/ai-skills/main/install.sh | bash -s -- --cursor --project
+
+# Codex into current project (instead of global)
+curl -fsSL https://raw.githubusercontent.com/HerodotusDev/ai-skills/main/install.sh | bash -s -- --codex --project
 
 # Antigravity into current project (instead of global)
 curl -fsSL https://raw.githubusercontent.com/HerodotusDev/ai-skills/main/install.sh | bash -s -- --antigravity --project
@@ -72,15 +75,33 @@ curl -fsSL https://raw.githubusercontent.com/HerodotusDev/ai-skills/main/plugins
   -o .cursor/skills/herodotus/atlantic-api/SKILL.md
 ```
 
-### Codex (OpenAI)
+### Codex / Gemini CLI
 
-Skills are installed under `~/.codex/skills/herodotus/`:
+Both [Codex](https://developers.openai.com/codex/skills/) and [Gemini CLI](https://geminicli.com/docs/cli/skills/) read skills from the `.agents/skills/` standard path. One install covers both tools.
+
+Skills are installed under `~/.agents/skills/herodotus/` (global) or `.agents/skills/herodotus/` (per-project).
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/HerodotusDev/ai-skills/main/install.sh | bash -s -- --codex
+# or equivalently:
+curl -fsSL https://raw.githubusercontent.com/HerodotusDev/ai-skills/main/install.sh | bash -s -- --gemini-cli
 ```
 
-### Google Gemini / Jules
+Or install into the current project:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/HerodotusDev/ai-skills/main/install.sh | bash -s -- --codex --project
+```
+
+Or manually copy any skill:
+
+```bash
+mkdir -p .agents/skills/herodotus/atlantic-api
+curl -fsSL https://raw.githubusercontent.com/HerodotusDev/ai-skills/main/plugins/herodotus-skills/skills/atlantic-api/SKILL.md \
+  -o .agents/skills/herodotus/atlantic-api/SKILL.md
+```
+
+### Google Jules
 
 Downloads an `AGENTS.md` file into your project root:
 
@@ -160,7 +181,7 @@ ai-skills/
 │           ├── storage-proof-api/SKILL.md
 │           ├── satellite-contracts/SKILL.md
 │           └── data-structure-indexer-api/SKILL.md
-├── AGENTS.md                          # Google Gemini / Jules agent instructions
+├── AGENTS.md                          # Google Jules agent instructions
 ├── install.sh                         # Universal installer script
 └── README.md
 ```
