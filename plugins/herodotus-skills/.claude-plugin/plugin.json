@@ -1,0 +1,35 @@
+{
+  "name": "herodotus-skills",
+  "version": "1.0.0",
+  "description": "Herodotus Cloud Services AI skill playbooks — vendor-neutral guides for building with Atlantic API, Data Processor, Storage Proofs, Satellite Contracts, and more.",
+  "skills": [
+    {
+      "name": "herodotus",
+      "source": "./skills/herodotus"
+    },
+    {
+      "name": "atlantic-api",
+      "source": "./skills/atlantic-api"
+    },
+    {
+      "name": "data-processor",
+      "source": "./skills/data-processor"
+    },
+    {
+      "name": "data-processor-api",
+      "source": "./skills/data-processor-api"
+    },
+    {
+      "name": "storage-proof-api",
+      "source": "./skills/storage-proof-api"
+    },
+    {
+      "name": "satellite-contracts",
+      "source": "./skills/satellite-contracts"
+    },
+    {
+      "name": "data-structure-indexer-api",
+      "source": "./skills/data-structure-indexer-api"
+    }
+  ]
+}
