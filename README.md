@@ -4,13 +4,13 @@ Vendor-neutral AI skill playbooks for building with [Herodotus Cloud Services](h
 
 ## Quick Install
 
-Install all skills for your AI coding tools with one command:
+Run the installer and pick the tools you use from an interactive selector (auto-detects what's installed):
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/HerodotusDev/ai-skills/main/install.sh | bash
 ```
 
-Or install for specific tools:
+Or skip the selector and install for specific tools directly:
 
 ```bash
 # Claude Code only
@@ -58,7 +58,7 @@ Then invoke any skill:
 
 ### Cursor
 
-Skills are installed as `SKILL.md` files. The installer places them in `~/.cursor/skills/` (global) or `.cursor/skills/` (per-project).
+Skills are installed as `SKILL.md` files under a `herodotus/` folder. The installer places them in `~/.cursor/skills/herodotus/` (global) or `.cursor/skills/herodotus/` (per-project).
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/HerodotusDev/ai-skills/main/install.sh | bash -s -- --cursor
@@ -67,14 +67,14 @@ curl -fsSL https://raw.githubusercontent.com/HerodotusDev/ai-skills/main/install
 Or manually copy any skill:
 
 ```bash
-mkdir -p .cursor/skills/atlantic-api
+mkdir -p .cursor/skills/herodotus/atlantic-api
 curl -fsSL https://raw.githubusercontent.com/HerodotusDev/ai-skills/main/plugins/herodotus-skills/skills/atlantic-api/SKILL.md \
-  -o .cursor/skills/atlantic-api/SKILL.md
+  -o .cursor/skills/herodotus/atlantic-api/SKILL.md
 ```
 
 ### Codex (OpenAI)
 
-Skills are installed to `~/.codex/skills/`:
+Skills are installed under `~/.codex/skills/herodotus/`:
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/HerodotusDev/ai-skills/main/install.sh | bash -s -- --codex
@@ -96,7 +96,7 @@ curl -fsSL https://raw.githubusercontent.com/HerodotusDev/ai-skills/main/AGENTS.
 
 ### Google Antigravity
 
-Skills are installed to `~/.gemini/antigravity/skills/` (global) or `.agent/skills/` (per-project):
+Skills are installed under `~/.gemini/antigravity/skills/herodotus/` (global) or `.agent/skills/herodotus/` (per-project):
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/HerodotusDev/ai-skills/main/install.sh | bash -s -- --antigravity
@@ -111,9 +111,9 @@ curl -fsSL https://raw.githubusercontent.com/HerodotusDev/ai-skills/main/install
 Or manually copy any skill:
 
 ```bash
-mkdir -p .agent/skills/atlantic-api
+mkdir -p .agent/skills/herodotus/atlantic-api
 curl -fsSL https://raw.githubusercontent.com/HerodotusDev/ai-skills/main/plugins/herodotus-skills/skills/atlantic-api/SKILL.md \
-  -o .agent/skills/atlantic-api/SKILL.md
+  -o .agent/skills/herodotus/atlantic-api/SKILL.md
 ```
 
 ### Manual Download
