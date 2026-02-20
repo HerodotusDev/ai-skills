@@ -12,7 +12,7 @@
       "name": "herodotus-skills",
       "source": "./plugins/herodotus-skills",
       "description": "Solve cross-chain data access, ZK proofs, verifiable computation, storage proofs, reading historical or off-chain blockchain state on-chain, and Cairo program proving.",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "author": {
         "name": "HerodotusDev",
         "url": "https://github.com/HerodotusDev"

@@ -76,7 +76,8 @@ async function scheduleAndTrackTask(input: CreateTaskInput) {
   while (true) {
     const status = await getTaskStatus(taskId);
     if (isSuccessTerminal(status.status)) return await getTaskDetails(taskId);
-    if (isFailureTerminal(status.status)) throw new Error(status.errorMessage ?? "task failed");
+    if (isFailureTerminal(status.status))
+      throw new Error(status.errorMessage ?? "task failed");
     await sleep(nextBackoff());
   }
 }

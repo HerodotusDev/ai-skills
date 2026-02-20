@@ -141,27 +141,27 @@ curl -fsSL https://raw.githubusercontent.com/HerodotusDev/ai-skills/main/plugins
 
 Download any individual skill directly:
 
-| Skill | Download |
-|-------|----------|
-| Herodotus (Full Stack) | [SKILL.md](https://raw.githubusercontent.com/HerodotusDev/ai-skills/main/plugins/herodotus-skills/skills/herodotus/SKILL.md) |
-| Atlantic API | [SKILL.md](https://raw.githubusercontent.com/HerodotusDev/ai-skills/main/plugins/herodotus-skills/skills/atlantic-api/SKILL.md) |
-| Data Processor | [SKILL.md](https://raw.githubusercontent.com/HerodotusDev/ai-skills/main/plugins/herodotus-skills/skills/data-processor/SKILL.md) |
-| Data Processor API | [SKILL.md](https://raw.githubusercontent.com/HerodotusDev/ai-skills/main/plugins/herodotus-skills/skills/data-processor-api/SKILL.md) |
-| Storage Proof API | [SKILL.md](https://raw.githubusercontent.com/HerodotusDev/ai-skills/main/plugins/herodotus-skills/skills/storage-proof-api/SKILL.md) |
-| Satellite Contracts | [SKILL.md](https://raw.githubusercontent.com/HerodotusDev/ai-skills/main/plugins/herodotus-skills/skills/satellite-contracts/SKILL.md) |
+| Skill                      | Download                                                                                                                                      |
+| -------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| Herodotus (Full Stack)     | [SKILL.md](https://raw.githubusercontent.com/HerodotusDev/ai-skills/main/plugins/herodotus-skills/skills/herodotus/SKILL.md)                  |
+| Atlantic API               | [SKILL.md](https://raw.githubusercontent.com/HerodotusDev/ai-skills/main/plugins/herodotus-skills/skills/atlantic-api/SKILL.md)               |
+| Data Processor             | [SKILL.md](https://raw.githubusercontent.com/HerodotusDev/ai-skills/main/plugins/herodotus-skills/skills/data-processor/SKILL.md)             |
+| Data Processor API         | [SKILL.md](https://raw.githubusercontent.com/HerodotusDev/ai-skills/main/plugins/herodotus-skills/skills/data-processor-api/SKILL.md)         |
+| Storage Proof API          | [SKILL.md](https://raw.githubusercontent.com/HerodotusDev/ai-skills/main/plugins/herodotus-skills/skills/storage-proof-api/SKILL.md)          |
+| Satellite Contracts        | [SKILL.md](https://raw.githubusercontent.com/HerodotusDev/ai-skills/main/plugins/herodotus-skills/skills/satellite-contracts/SKILL.md)        |
 | Data Structure Indexer API | [SKILL.md](https://raw.githubusercontent.com/HerodotusDev/ai-skills/main/plugins/herodotus-skills/skills/data-structure-indexer-api/SKILL.md) |
 
 ## Available Skills
 
-| Skill | Purpose |
-|-------|---------|
-| **Herodotus (Full Stack)** | **Start here** — complete guide to the stack, helps pick the right products, cross-product composition patterns |
-| **Atlantic API** | Submit Cairo proving jobs, track query/job lifecycle, download artifacts, integrate L1/L2 verification |
-| **Data Processor (HDP)** | Build Cairo modules consuming proof-backed chain data, run dry-run/fetch-proofs/sound-run pipelines |
-| **Data Processor API** | Orchestrate HDP tasks/modules via HTTP, manage task lifecycle and module registry |
-| **Storage Proof API** | Request proof-backed data, track completion, consume verified values on-chain via Satellite |
-| **Satellite Contracts** | Integrate ISatellite in Solidity, read verified historical on-chain values with safe access patterns |
-| **Data Structure Indexer API** | Discover accumulators/remappers, plan proof-backed workflows from indexed data |
+| Skill                          | Purpose                                                                                                         |
+| ------------------------------ | --------------------------------------------------------------------------------------------------------------- |
+| **Herodotus (Full Stack)**     | **Start here** — complete guide to the stack, helps pick the right products, cross-product composition patterns |
+| **Atlantic API**               | Submit Cairo proving jobs, track query/job lifecycle, download artifacts, integrate L1/L2 verification          |
+| **Data Processor (HDP)**       | Build Cairo modules consuming proof-backed chain data, run dry-run/fetch-proofs/sound-run pipelines             |
+| **Data Processor API**         | Orchestrate HDP tasks/modules via HTTP, manage task lifecycle and module registry                               |
+| **Storage Proof API**          | Request proof-backed data, track completion, consume verified values on-chain via Satellite                     |
+| **Satellite Contracts**        | Integrate ISatellite in Solidity, read verified historical on-chain values with safe access patterns            |
+| **Data Structure Indexer API** | Discover accumulators/remappers, plan proof-backed workflows from indexed data                                  |
 
 ## Repository Structure
 

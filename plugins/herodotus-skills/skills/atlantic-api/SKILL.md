@@ -66,7 +66,7 @@ Treat Atlantic as proving infrastructure, not your business workflow engine:
 ```ts
 async function runAtlanticJob(payload: unknown) {
   const queryId = await submitAtlanticQuery(payload); // POST /atlantic-query
-  const status = await waitUntilTerminal(queryId);    // poll with backoff
+  const status = await waitUntilTerminal(queryId); // poll with backoff
   if (status.kind !== "success") throw new Error(status.error);
   const artifacts = await downloadAtlanticArtifacts(queryId);
   return { queryId, artifacts };
