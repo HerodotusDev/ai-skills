@@ -11,6 +11,8 @@ Use this skill to build, operate, and troubleshoot Atlantic proving workflows wi
 
 ## When to use
 
+> **Precondition:** Atlantic requires an API key. If you don't already have one, run the `herodotus-auth` skill first to obtain one programmatically via wallet auth (https://docs.herodotus.cloud/skills/herodotus-auth). In Claude Code: `/herodotus-skills:herodotus-auth`.
+
 - Submit Cairo proving jobs.
 - Track query/job lifecycle and terminal states.
 - Download artifacts (PIE/PROOF/metadata).
@@ -38,7 +40,7 @@ Treat Atlantic as proving infrastructure, not your business workflow engine:
 
 ## Implementation workflow
 
-1. Get API key and environment.
+1. Authenticate and obtain an API key via the `herodotus-auth` skill (https://docs.herodotus.cloud/skills/herodotus-auth). New wallets get a Personal project + active API key auto-provisioned on the first session — `GET /api-keys?projectId=<selectedProject>` returns it.
 2. Build request payload from OpenAPI.
 3. Submit query.
 4. Poll status/jobs with backoff.

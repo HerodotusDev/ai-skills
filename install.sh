@@ -6,7 +6,7 @@ BRANCH="main"
 BASE_URL="https://raw.githubusercontent.com/$REPO/$BRANCH"
 SKILLS_PATH="plugins/herodotus-skills/skills"
 MAIN_SKILL=herodotus
-SUB_SKILLS=(atlantic-api data-processor data-processor-api storage-proof-api satellite-contracts data-structure-indexer-api)
+SUB_SKILLS=(herodotus-auth atlantic-api data-processor data-processor-api storage-proof-api satellite-contracts data-structure-indexer-api)
 
 INSTALL_CLAUDE=false
 INSTALL_CURSOR=false
