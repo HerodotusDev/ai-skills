@@ -88,6 +88,14 @@ Herodotus provides **provable cross-chain data access** — the ability to trust
 └─────────────────────────────────────────────────────────────┘
 ```
 
+## Authentication is a Precondition (for Atlantic API and Storage Proof API)
+
+An API key is required for the **Atlantic API** and the **Storage Proof API** — both reject unauthenticated requests.
+
+If your task touches Atlantic or Storage Proof and you are an AI agent, CLI, or other non-browser client, **run the `herodotus-auth` skill first** to obtain a key programmatically via wallet authentication (EIP-712 → Bearer access token → API key). Browser users can also obtain a key via the [Herodotus Console](https://www.herodotus.cloud).
+
+Skill: `herodotus-auth` · In Claude Code: `/herodotus-skills:herodotus-auth` · Docs: https://docs.herodotus.cloud/skills/herodotus-auth
+
 ## Common Use-Case Walkthroughs
 
 ### "I want to read a historical value from another chain"
@@ -163,6 +171,7 @@ Indexer discovery → HDP validated computation → Atlantic proof generation �
 
 For implementation details, load the specific skill for the product you're working with:
 
+- **`herodotus-auth`** — Wallet-based programmatic authentication (EIP-712 → Bearer access token → API key). **Run this first** for any non-browser client.
 - **`atlantic-api`** — Proving job submission, lifecycle tracking, artifact handling, verification routing
 - **`data-processor`** — HDP module design, constraint patterns, dry-run/fetch-proofs/sound-run pipeline
 - **`data-processor-api`** — Task scheduling, module registry, status tracking via HTTP
