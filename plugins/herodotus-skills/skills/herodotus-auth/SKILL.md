@@ -151,7 +151,7 @@ curl -s "$BASE/api-keys?projectId=$PROJECT&limit=10&offset=0" \
 
 - Do not invent endpoints. The five listed under "Source-of-truth" are the entire surface this skill needs.
 - Do not hardcode the EIP-712 `domain`, `types`, `primaryType`, or `statement` — read them from the challenge response on every login. The server may rotate them.
-- Do not extract a cookie-issued JWT and forward it as `Authorization: Bearer`. The server enforces channel binding and will reject it with `ChannelMismatch`.
+- Do not extract a cookie-issued JWT and forward it as `Authorization: Bearer`. The server enforces channel binding and will reject it.
 - Do not assume a default `projectId`. Always read `selectedProject` from the session response.
 - Do not assume `POST /api-keys` is required. New wallets get one auto-provisioned; only call POST if you need additional keys.
 - If a behavior is undocumented in the source-of-truth list above, mark it unknown and ask for clarification rather than inventing it.

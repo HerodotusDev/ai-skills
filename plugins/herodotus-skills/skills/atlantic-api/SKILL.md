@@ -72,13 +72,12 @@ There are three states. Only the second and third trigger x402:
 
 1. **API key + sufficient credits** — normal flow. Do **not** send a
    `PAYMENT-SIGNATURE` header preemptively; it will be ignored. The
-   server only requests payment after `INSUFFICIENT_CREDITS`.
+   server only requests payment when prepaid credits are not sufficient
+   for the query.
 2. **API key + depleted credits → API-key flow.** Server returns `402`.
    Pay once, the settled amount is added to your project's credit
-   balance as a `creditPackage` with a **2-year expiry**, the current
-   query goes through, and **leftover credits remain on the project**
-   for future queries — drawn down by the same `validateCreditsBalance`
-   path as Stripe top-ups.
+   balance with a **2-year expiry**, the current query goes through,
+   and **leftover credits remain on the project** for future queries.
 3. **No API key + EVM wallet → anonymous flow.** Server returns `402`.
    Identity = recovered EIP-3009 signer. **Pay-once, use-once.** No
    project, no balance, no carryover, no refunds. Each query needs a
@@ -143,19 +142,18 @@ There are three states. Only the second and third trigger x402:
   them from `accepts[]` on every 402. The server may switch networks
   or rotate the receiver address.
 - Do **not** preemptively send `PAYMENT-SIGNATURE` on the API-key
-  flow. The server only invokes x402 after `INSUFFICIENT_CREDITS`;
+  flow. The server only requests x402 payment after prepaid credits are
+  insufficient;
   sending payment with credits available wastes the signature.
 - Do **not** reuse a `PAYMENT-SIGNATURE` after a successful settle.
-  Challenges are single-use (`consumeX402Challenge` fires on success);
-  a replay returns `X402_SETTLEMENT_FAILED` (status 402). Fetch a
-  fresh `PAYMENT-REQUIRED` for each new query.
+  Challenges are single-use; a replay returns `X402_SETTLEMENT_FAILED`
+  (status 402). Fetch a fresh `PAYMENT-REQUIRED` for each new query.
 - Do **not** send `dedupId` or `bucketId` on the anonymous flow.
 - Do **not** assume anonymous payments leave a credit balance. They
   do not. If a wallet wants persistent credits, run `herodotus-auth`
   and use the API-key flow.
-- Do **not** confuse error codes: `X402_ANONYMOUS_DISABLED` is
-  rewritten to `MISSING_API_KEY` (status 400) before reaching the
-  agent. Match on the agent-visible code.
+- Match only on agent-visible error codes. For anonymous flow disabled,
+  the agent-visible code is `MISSING_API_KEY` (status 400).
 
 ### Error taxonomy (x402)
 
