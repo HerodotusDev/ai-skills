@@ -135,10 +135,10 @@ There are three states. Only the second and third trigger x402:
 
 ### Anti-hallucination guardrails (x402)
 
-- Do **not** call `/internal/x402/challenge`,
-  `/internal/x402/challenge-anonymous`, `/internal/x402/settle`, or
-  `/internal/x402/settle-anonymous`. They are auth-billing-internal,
-  webhook-authenticated, and not part of the agent surface.
+- Use only the public x402 flow exposed by `POST /atlantic-query` and
+  the `PAYMENT-REQUIRED`, `PAYMENT-SIGNATURE`, and `PAYMENT-RESPONSE`
+  headers. Do not invent or call payment endpoints that are not in the
+  public docs or OpenAPI spec.
 - Do **not** hardcode `payTo`, `asset`, `network`, or `amount`. Read
   them from `accepts[]` on every 402. The server may switch networks
   or rotate the receiver address.
