@@ -15,7 +15,7 @@ Programmatic, browser-free authentication for AI agents and CLIs. Exchange an EI
 - Cookie-based session is not viable (no cookie jar, cross-origin, serverless, headless).
 - You have an EVM wallet — any signer that can produce an EIP-712 signature works (private key in env, KMS, hardware wallet, MetaMask, ethers, viem).
 
-**Out of scope.** This skill is wallet auth only. The GitHub OAuth path (`/auth/github/...`) is cookie-only by design and is not exposed through this protocol — do not try `channel=bearer` against it.
+**Out of scope.** This skill is wallet auth only. The GitHub OAuth path (`/auth/github/...`) is cookie-only by design and is not exposed through this protocol — do not send `channel: "bearer"` in the body against it.
 
 ## Source-of-truth
 
