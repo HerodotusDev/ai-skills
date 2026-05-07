@@ -38,113 +38,18 @@ Programmatic, browser-free authentication for AI agents and CLIs. Exchange an EI
 5. **Refresh.** Before expiry, `POST /auth/refresh-token` with `Authorization: Bearer <refreshToken>`. Response body returns a fresh `{ accessToken, refreshToken, expiresAt }`. Old refresh token is invalidated.
 6. **Get API key.** First-time wallets are auto-provisioned with a Personal project and one active API key. Retrieve it with `GET /api-keys?projectId=<selectedProject>&limit=10&offset=0`; read `data[0].apiKey`. Mint additional keys with `POST /api-keys` body `{ projectId, type: { name, color } }`.
 
-## Bring-your-own signer
+## Signers and Channel Binding
 
-This skill specifies the wire protocol; signing is the caller's responsibility. The reference example below uses viem because it is terse, but any EIP-712 signer works as long as it signs the exact `{ domain, types, primaryType, message }` returned by the challenge endpoint:
+Signing is caller-owned. `scripts/auth.ts` uses the hcloud SDK `privateKeySigner`; ethers, browser wallets, KMS, and hardware wallets are covered in `references/eip712-signing.md`.
 
-- viem: `account.signTypedData({ domain, types, primaryType, message })`
-- ethers v6: `wallet.signTypedData(domain, types, message)` — drop `EIP712Domain` from `types` if present.
-- Browser wallet: `window.ethereum.request({ method: 'eth_signTypedData_v4', params: [address, JSON.stringify(payload)] })`
-- KMS / hardware: any signer that produces a valid EIP-712 signature for the typed payload.
+Tokens are channel-bound. A token issued with `channel: "bearer"` must be sent via `Authorization: Bearer`; cookie-issued tokens must stay cookies. See `references/channel-binding.md` for the security property and curl recipe.
 
-> **Production note.** A private key in an env var is fine for local development and CI agents; for production agents, prefer KMS or a hardware-backed signer. The protocol is signer-agnostic.
-
-## Channel binding (security property — do not work around)
-
-Tokens are bound to the transport channel they were issued on:
-
-- A token issued with `channel: 'bearer'` is **rejected** if presented via cookie.
-- A token issued with `channel: 'cookie'` is **rejected** if presented via `Authorization: Bearer`.
-
-This is enforced server-side and is not configurable. If your agent uses this skill, every authenticated call must use `Authorization: Bearer <accessToken>`. If you also need a browser session for the same wallet, run the cookie path separately — do not reuse tokens across channels.
-
-## Self-contained reference example (viem)
-
-```ts
-import { privateKeyToAccount } from 'viem/accounts';
-
-const BASE = 'https://auth-billing.api.herodotus.cloud';
-const PRIVATE_KEY = process.env.HERODOTUS_WALLET_PRIVATE_KEY as `0x${string}`;
-
-async function authenticate() {
-  const account = privateKeyToAccount(PRIVATE_KEY);
-
-  // 1. Fetch challenge
-  const challenge = await fetch(
-    `${BASE}/auth/web3/challenge?wallet=${account.address}`,
-  ).then((r) => r.json());
-
-  // 2. Sign EIP-712 typed data exactly as returned
-  const signature = await account.signTypedData({
-    domain: challenge.eip712.domain,
-    types: challenge.eip712.types,
-    primaryType: challenge.eip712.primaryType,
-    message: challenge.eip712.message,
-  });
-
-  // 3. Exchange for Bearer session
-  const session = await fetch(`${BASE}/auth/web3/session`, {
-    method: 'POST',
-    headers: { 'content-type': 'application/json' },
-    body: JSON.stringify({
-      wallet: account.address,
-      challengeToken: challenge.challengeToken,
-      signature,
-      channel: 'bearer',
-    }),
-  }).then((r) => r.json());
-
-  const { accessToken, refreshToken, expiresAt, selectedProject } = session;
-
-  // 4. Retrieve auto-provisioned API key
-  const keysRes = await fetch(
-    `${BASE}/api-keys?projectId=${selectedProject}&limit=10&offset=0`,
-    { headers: { authorization: `Bearer ${accessToken}` } },
-  ).then((r) => r.json());
-
-  const apiKey = keysRes.data[0].apiKey;
-
-  return { accessToken, refreshToken, expiresAt, selectedProject, apiKey };
-}
-
-async function refresh(refreshToken: string) {
-  const res = await fetch(`${BASE}/auth/refresh-token`, {
-    method: 'POST',
-    headers: {
-      authorization: `Bearer ${refreshToken}`,
-      'content-type': 'application/json',
-    },
-    body: '{}',
-  }).then((r) => r.json());
-  return res; // { accessToken, refreshToken, expiresAt }
-}
-```
-
-### Equivalent curl recipe
+## Run It
 
 ```bash
-WALLET=0x...
-BASE=https://auth-billing.api.herodotus.cloud
-
-# 1. Challenge
-curl -s "$BASE/auth/web3/challenge?wallet=$WALLET" > challenge.json
-
-# 2. Sign challenge.json's eip712 payload with your wallet (out of band)
-SIG=0x...
-
-# 3. Bearer session
-curl -s -X POST "$BASE/auth/web3/session" \
-  -H 'content-type: application/json' \
-  -d "{\"wallet\":\"$WALLET\",\"challengeToken\":\"$(jq -r .challengeToken challenge.json)\",\"signature\":\"$SIG\",\"channel\":\"bearer\"}" \
-  > session.json
-
-ACCESS=$(jq -r .accessToken session.json)
-PROJECT=$(jq -r .selectedProject session.json)
-
-# 4. API key
-curl -s "$BASE/api-keys?projectId=$PROJECT&limit=10&offset=0" \
-  -H "authorization: Bearer $ACCESS" \
-  | jq -r '.data[0].apiKey'
+cd scripts
+pnpm install
+WALLET_PRIVATE_KEY=0x... ./auth.ts | jq -r .apiKey
 ```
 
 ## Anti-hallucination guardrails
@@ -161,18 +66,31 @@ curl -s "$BASE/api-keys?projectId=$PROJECT&limit=10&offset=0" \
 - Challenge fetched with the exact wallet address that will sign.
 - Signature produced over the verbatim `eip712` payload from the challenge response.
 - `channel: "bearer"` set on the session request.
-- `accessToken`, `refreshToken`, `expiresAt`, `selectedProject` persisted by the agent.
+- `accessToken`, `refreshToken`, `expiresAt`, `selectedProject`, and API key persisted by the hcloud SDK credential store.
 - API key retrieved (or minted) and stored for downstream skills.
 - Refresh path verified before access-token expiry: `POST /auth/refresh-token` with `Authorization: Bearer <refreshToken>` returns a new pair.
 - All subsequent Herodotus API calls use `Authorization: Bearer <accessToken>` — never cookies.
 
+## Index
+
+### scripts/ (runnable TypeScript helpers)
+- `scripts/auth.ts` — wallet auth through hcloud SDK → persisted credentials + API key JSON
+- `scripts/refresh.ts` — refresh active stored wallet session before expiry
+- `scripts/get-api-key.ts` — read/list API keys for the active stored wallet or explicit project
+- `scripts/README.md`, `scripts/package.json`, `scripts/pnpm-lock.yaml`, `scripts/tsconfig.json`, `scripts/.gitignore` — install and type-check support
+
+### examples/ (full scenario recipes)
+- `examples/ethers-v6-signer.ts` — alternative ethers v6 signer
+- `examples/kms-signer-pattern.md` — production KMS/hardware signer boundary
+- `examples/e2e-auth-then-atlantic.ts` — auth → Atlantic submit composition
+- `examples/README.md` — recipe index
+- `examples/package.json`, `examples/pnpm-lock.yaml`, `examples/tsconfig.json`, `examples/.gitignore` — install support for the Atlantic composition example
+
+### references/ (deep docs, load on demand)
+- `references/eip712-signing.md` — signer-specific notes
+- `references/channel-binding.md` — bearer/cookie channel enforcement
+- `references/api-keys-management.md` — project model and key creation
+
 ## Next skill
 
-Once you have an API key, load the product-specific skill:
-
-- `atlantic-api` — Cairo proving jobs, lifecycle tracking, artifact handling, L1/L2 verification.
-- `storage-proof-api` — Storage / account / header proofs across chains.
-- `data-processor-api` — Verifiable computation orchestration (HDP).
-- `data-structure-indexer-api` — Discovery of accumulators and remappers.
-- `satellite-contracts` — On-chain consumption of verified data.
-- `data-processor` — HDP module authoring and the dry-run / fetch-proofs / sound-run pipeline.
+Once you have an API key, load the product-specific skill: `atlantic-api`, `storage-proof-api`, `data-processor-api`, `data-structure-indexer-api`, `satellite-contracts`, or `data-processor`.
