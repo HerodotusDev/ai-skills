@@ -51,6 +51,35 @@ Treat Atlantic as proving infrastructure, not your business workflow engine:
 8. Route to verifier adapter (L1/L2/offchain) as needed.
 9. Persist query state, artifacts, and verification outcome.
 
+## Agent interaction workflow
+
+When the user wants to submit an Atlantic query, collect readiness and payload details before asking for final submission confirmation:
+
+1. First ask whether the user already has a Herodotus/Atlantic API key.
+2. If they do not have an API key, suggest using the `herodotus-auth` skill to obtain one before continuing. Do not ask whether to submit the query until the API key path is clear.
+3. Before submit, ask for the full payload details required by the OpenAPI contract and workflow context, including at minimum:
+   - target network/environment (`testnet` or `mainnet`)
+   - Cairo version and VM choice when applicable
+   - result/terminal artifact goal, for example trace/proof/verification flow
+   - program/input files or JSON body descriptor
+   - any verifier path requirements, such as L1, L2, or offchain verification
+   - project-specific constraints such as declared job size, mocked fact hash policy, webhook URL, or idempotency key if used
+4. Recommend `layout: "auto"` unless the user has a specific documented reason to override it. Atlantic can then choose the optimal layout.
+5. After the user confirms the final payload and API-key/payment path, submit the query.
+6. After submit, always surface the Atlantic Console status URL derived from the returned query id:
+
+```text
+https://www.herodotus.cloud/en/atlantic/<query-id>
+```
+
+Tell the user that inspecting this status/details page in Herodotus Console requires logging in with the same wallet that submitted the query.
+
+For example, if `POST /atlantic-query` returns `01KR19Q2PV7EV61DS1MGP69ER0`, tell the user they can inspect status and query details at:
+
+```text
+https://www.herodotus.cloud/en/atlantic/01KR19Q2PV7EV61DS1MGP69ER0
+```
+
 ## Reliability requirements
 
 - Keep Atlantic query ID as a first-class DB entity.
@@ -99,6 +128,8 @@ async function runAtlanticJob(payload: unknown) {
 ## Output checklist
 
 - Query ID captured
+- Console status/details URL shown to the user as `https://www.herodotus.cloud/en/atlantic/<query-id>`
+- Same-wallet login requirement for Herodotus Console status inspection communicated
 - Terminal status captured
 - Artifacts persisted
 - Verification path selected
