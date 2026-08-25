@@ -102,8 +102,8 @@ Skill: `herodotus-auth` · In Claude Code: `/herodotus-skills:herodotus-auth` ·
 
 **Storage Proof API + Satellite Contracts**
 
-1. Submit a batch query via Storage Proof API specifying the chain, block, account, and slot.
-2. Wait for terminal success.
+1. `POST /submit-request` to Mission Control (`https://mission-control.api.herodotus.cloud`) with origin-chain proof data and `destination_chain_id` (auth: `api-key` header).
+2. Poll `GET /get_queries/{request_id}` until terminal success.
 3. Read the proven value on-chain via Satellite's safe methods (`accountFieldSafe`, `storageSlotSafe`, etc.).
 
 ### "I want to compute over historical chain data with proofs"
@@ -175,7 +175,7 @@ For implementation details, load the specific skill for the product you're worki
 - **`atlantic-api`** — Proving job submission, lifecycle tracking, artifact handling, verification routing
 - **`data-processor`** — HDP module design, constraint patterns, dry-run/fetch-proofs/sound-run pipeline
 - **`data-processor-api`** — Task scheduling, module registry, status tracking via HTTP
-- **`storage-proof-api`** — Batch query construction, proof lifecycle, Satellite readback
+- **`storage-proof-api`** — Mission Control submit-request / get_queries lifecycle, Satellite readback
 - **`satellite-contracts`** — ISatellite integration, safe reads, address resolution, trust boundaries
 - **`data-structure-indexer-api`** — Accumulator/remapper discovery, candidate planning
 
