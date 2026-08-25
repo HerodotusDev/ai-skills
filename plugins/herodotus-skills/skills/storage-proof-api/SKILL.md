@@ -32,7 +32,7 @@ Product name remains **Storage Proof API**. Requests are served by Mission Contr
 
 | Item | Value |
 |------|-------|
-| Base URL | `https://mission-control.api.herodotus.cloud` |
+| Base URL | `https://mission-control.api.herodotus.cloud` (alias `https://api.herodotus.cloud`) |
 | Swagger UI | https://mission-control.api.herodotus.cloud/swagger/ |
 | OpenAPI | https://mission-control.api.herodotus.cloud/api-docs/openapi.json |
 | Auth | Header `api-key` (required except `/is-alive`) |
@@ -46,7 +46,7 @@ Primary endpoints:
 - Grow orders: `GET/POST /grow-orders`, `GET /grow-orders/{id}`, `POST /grow-orders/{id}/cancel`
 - `GET /is-alive` → `{ message: "Alive!" }`
 
-Request body uses snake_case (`destination_chain_id`, not `destinationChainId`). Do not use the retired paths `/submit-batch-query`, `/batch-query-status`, or `https://api.herodotus.cloud`. Do not invent endpoints beyond this surface.
+Request body uses snake_case (`destination_chain_id`, not `destinationChainId`). Do not use the retired paths `/submit-batch-query` or `/batch-query-status`. `https://api.herodotus.cloud` is the Storage Proof API alias for the same Mission Control service. Do not invent endpoints beyond this surface.
 
 ## Architecture pattern
 
